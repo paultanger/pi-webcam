@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+        <h1 class="mt-4">Review Dashboard selection</h1>
+        <p>Here you can examine the model predictions versus the category 
+          "Wild Camping" or "Established Campground" as entered by the user who submitted the site to iOverlander.
+        There is currently 7,834 that the model has predicted on.  You can either view sites that the model correctly predicted,
+      or more interestingly, when the model got it wrong.  Functionality will be added to enable you to edit the category label.</p>
+      <p>right now, you can only choose 1 sample at a time.</p> 
+        <p>choose if you want to view correct or incorrect predictions:</p> 
+        <form action="/results" method="POST">
+          <!-- <input type="text" name="predict_type" /> -->
+          <select name="predict_type">
+            <option value="Incorrect Predictions">Incorrect Predictions</option>
+            <option value="Correct Predictions">Correct Predictions</option>
+            </select>
+          <!-- <input type="submit" /> -->
+          <p></p>
+          <p>enter number of samples to view:</p> 
+          <input type="number" name="n_sample" min="1" max="1"/>
+          <p></p>
+          <p>once you have selected the options, click below:</p>
+          <input type="submit" value="view results"/>
+        </form>
+        {% endblock %}
