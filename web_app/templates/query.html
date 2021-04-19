@@ -7,7 +7,7 @@
       or more interestingly, when the model got it wrong.  Functionality will be added to enable you to edit the category label.</p>
       <p>right now, you can only choose 1 sample at a time.</p> 
         <p>choose if you want to view correct or incorrect predictions:</p> 
-        <form action="/results" method="POST">
+        <form action="{{ url_for('query') }}" method="POST">
           <!-- <input type="text" name="predict_type" /> -->
           <select name="predict_type">
             <option value="Incorrect Predictions">Incorrect Predictions</option>

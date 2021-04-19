@@ -27,8 +27,8 @@
       <div class="sidebar-heading"> dashboard </div>
       <div class="list-group list-group-flush">
         <a href="/" class="list-group-item list-group-item-action bg-light">Overview</a>
-        <a href="/view_cam" class="list-group-item list-group-item-action bg-light">view webcam</a>
-        <a href="/query" class="list-group-item list-group-item-action bg-light">not implemented yet</a>
+        <a href="{{ url_for('view_cam') }}" class="list-group-item list-group-item-action bg-light">view webcam</a> 
+        <a href="{{ url_for('query') }}" class="list-group-item list-group-item-action bg-light">not implemented yet</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
