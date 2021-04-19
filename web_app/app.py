@@ -9,21 +9,30 @@ app = Flask(__name__, root_path='./')# template_folder = 'templates/')
 # app = Flask(__name__, root_path='./', static_url_path='/Users/pault/Desktop/github/media/') 
 
 vc = cv2.VideoCapture(0)
+# or another way
 
+def gen():
+    """
+    Video streaming generator function.
+    """ 
+    while True:
+        rval, frame = vc.read() 
+        #frame = camera.get_frame()
+        #cv2.imwrite('pic.jpg', frame) 
+        # or instead of writing to disk
+        byteArray = cv2.imencode('.jpg', frame)[1].tobytes()
+        #yield (b'--frame\r\n' 
+        #       b'Content-Type: image/jpeg\r\n\r\n' + open('pic.jpg', 'rb').read() + b'\r\n') 
+        yield (b'--frame\r\n' 
+               b'Content-Type: image/jpeg\r\n\r\n' + byteArray + b'\r\n') 
 
-def gen(): 
-   """Video streaming generator function.""" 
-   while True: 
-       rval, frame = vc.read() 
-       cv2.imwrite('pic.jpg', frame) 
-       yield (b'--frame\r\n' 
-              b'Content-Type: image/jpeg\r\n\r\n' + open('pic.jpg', 'rb').read() + b'\r\n') 
 
 @app.route('/video_feed', methods=['GET'])
-def video_feed(): 
-   """Video streaming route. Put this in the src attribute of an img tag.""" 
-   return Response(gen(), 
-                   mimetype='multipart/x-mixed-replace; boundary=frame')
+def video_feed():
+    """
+    Video streaming route. Put this in the src attribute of an img tag.
+    """
+    return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/', methods=['GET'])
@@ -43,14 +52,14 @@ def query():
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():
-    try:
-        pass
-        # n_sample = int(request.form['n_sample'])
-        # predict_type = request.form['predict_type']
-
-    except:
-        return f"""You have entered an incorrect value or something isn't quite working right.
-                    Sorry about that!  Hit the back button and try again."""
+    pass
+    # try:
+    #     pass
+    #     # n_sample = int(request.form['n_sample'])
+    #     # predict_type = request.form['predict_type']
+    # except:
+    #     return f"""You have entered an incorrect value or something isn't quite working right.
+    #                 Sorry about that!  Hit the back button and try again."""
 
     # return render_template('results.html', 
     #                         predict_text=predict_text, 
