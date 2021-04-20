@@ -96,6 +96,9 @@ def home():
 def view_cam():
     return render_template("view_cam.html")
 
+@app.route('/setup_recordings', methods=['GET'])
+def setup_recordings():
+    return render_template("setup_recordings.html")
 
 @app.route('/query', methods=['GET', 'POST'])
 def query():
