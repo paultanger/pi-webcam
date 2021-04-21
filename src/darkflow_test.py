@@ -1,4 +1,5 @@
 # only works when running from darkflow dir..
+# using the tf venv
 from darkflow.net.build import TFNet
 import cv2
 
