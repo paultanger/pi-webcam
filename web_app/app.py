@@ -74,6 +74,7 @@ def video_feed():
     """
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
 # @app.route('/video_feed', methods=['GET'])
 # def video_feed():
 #     """
@@ -87,6 +88,7 @@ def video_feed():
 #             stream.seek(0)
 #         return send_file(stream, mimetype='image/jpeg')
 
+
 @app.route('/', methods=['GET'])
 def home():
     return render_template("index.html")
@@ -96,18 +98,24 @@ def home():
 def view_cam():
     return render_template("view_cam.html")
 
+
 @app.route('/setup_recordings', methods=['GET'])
 def setup_recordings():
     return render_template("setup_recordings.html")
 
-@app.route('/query', methods=['GET', 'POST'])
-def query():
-    return render_template("query.html")
+
+# @app.route('/query', methods=['GET', 'POST'])
+# def query():
+#     return render_template("query.html")
 
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():
-    pass
+    record_time = int(request.form['record_time'])
+
+    # start the recording..
+    
+
     # try:
     #     pass
     #     # n_sample = int(request.form['n_sample'])
@@ -115,7 +123,8 @@ def results():
     # except:
     #     return f"""You have entered an incorrect value or something isn't quite working right.
     #                 Sorry about that!  Hit the back button and try again."""
-
+    return render_template('results.html',
+                            record_time=record_time)
     # return render_template('results.html', 
     #                         predict_text=predict_text, 
     #                         actual_text=actual_text, 

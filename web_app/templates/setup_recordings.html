@@ -3,5 +3,12 @@
   <h1 class="mt-4"></h1>
   <p>setup recordings here
   </p>
-</p>text</p>
+  <form action="{{ url_for('results') }}" method="POST">
+    <p>enter recording time in minutes:</p> 
+    <input type="number" name="record_time"/>
+    <p></p>
+    <p>once you have selected the options, click below:</p>
+    <input type="submit" value="confirm"/>
+  </form>
+</p>Thank you!</p>
 {% endblock %}
