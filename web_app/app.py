@@ -85,7 +85,7 @@ def gen():
 def gen_predict():
     while True:
         rval, frame = vc.read() 
-        bbox, label, conf = cv.detect_common_objects(frame, confidence=0.6, model='yolov3-tiny')
+        bbox, label, conf = cv.detect_common_objects(frame, confidence=0.3, model='yolov3-tiny')
         output_image = draw_bbox(frame, bbox, label, conf, write_conf=True)
         time_stamp = datetime.now().strftime('%Y %m %d %H:%M:%S') 
         if label == []:
@@ -93,6 +93,13 @@ def gen_predict():
         else:
             cv2.putText(output_image, f'{time_stamp}', (7, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (100, 255, 0), 1, cv2.LINE_AA)
             #cv2.imwrite('pic.jpg', output_image) 
+        
+        # here is where I can check if it predicts orange (egg), and alert me..
+        # TODO: 
+        if 'orange' in label:
+            # text me..
+            pass
+
         byteArray = cv2.imencode('.jpg', output_image)[1].tobytes()
         # don't do this for every frame
         time.sleep(3)
