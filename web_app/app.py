@@ -1,8 +1,11 @@
 from flask import Flask, request, render_template, Response, send_file
 import sys, os
 import cv2
+import cvlib as cv
+from cvlib.object_detection import draw_bbox
 import picamera
 import time
+from datetime import datetime
 import tempfile
 from io import BytesIO
 sys.path.insert(0, '../src/')
@@ -80,7 +83,22 @@ def gen():
 
 
 def gen_predict():
-    pass
+    while True:
+        rval, frame = vc.read() 
+        bbox, label, conf = cv.detect_common_objects(frame, confidence=0.6, model='yolov3-tiny')
+        output_image = draw_bbox(frame, bbox, label, conf, write_conf=True)
+        time_stamp = datetime.now().strftime('%Y %m %d %H:%M:%S') 
+        if label == []:
+            cv2.putText(output_image, f'no predictions, {time_stamp}', (7, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (100, 255, 0), 1, cv2.LINE_AA)
+        else:
+            cv2.putText(output_image, f'{time_stamp}', (7, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (100, 255, 0), 1, cv2.LINE_AA)
+            #cv2.imwrite('pic.jpg', output_image) 
+        byteArray = cv2.imencode('.jpg', output_image)[1].tobytes()
+        # don't do this for every frame
+        time.sleep(3)
+        yield (b'--frame\r\n' 
+               b'Content-Type: image/jpeg\r\n\r\n' + byteArray + b'\r\n') 
+
 
 @app.route('/video_feed', methods=['GET'])
 def video_feed():
