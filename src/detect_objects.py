@@ -4,10 +4,13 @@ import cv2
 import matplotlib.pyplot as plt
 import cvlib as cv
 from cvlib.object_detection import draw_bbox
-imgcv = cv2.imread('../darkflow/sample_img/egg.jpg')
-bbox, label, conf = cv.detect_common_objects(imgcv)
-output_image = draw_bbox(imgcv, bbox, label, conf)
-plt.imsave('egg_predict.jpg', output_image)
+import time
+import picamera
+import tempfile
+import funcs as myfuncs
+import io
+import numpy as np
+
 
 # or this
 # https://machinelearningmastery.com/how-to-perform-object-detection-with-yolov3-in-keras/
@@ -17,26 +20,27 @@ plt.imsave('egg_predict.jpg', output_image)
 
 # darknet is slower .. try doing it directly too..?
 
-weights_file = '/home/pi/yolo_pretrained_weights/yolov3.weights'
+def stuff():
+    weights_file = '/home/pi/yolo_pretrained_weights/yolov3.weights'
 
-from abc import ABC, abstractmethod
- 
-class ObjectDetector(ABC):
-    @abstractmethod
-    def detect(self, frame, threshold=0.0):
-        Pass
-        
-# initialize the camera and grab a reference to the raw camera capture
-camera = PiCamera()
-camera.resolution = (640, 480)
-camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=(640, 480))
+    from abc import ABC, abstractmethod
+    
+    class ObjectDetector(ABC):
+        @abstractmethod
+        def detect(self, frame, threshold=0.0):
+            Pass
+            
+    # initialize the camera and grab a reference to the raw camera capture
+    camera = PiCamera()
+    camera.resolution = (640, 480)
+    camera.framerate = 32
+    rawCapture = PiRGBArray(camera, size=(640, 480))
 
-# allow the camera to warm up
-time.sleep(0.1)
+    # allow the camera to warm up
+    time.sleep(0.1)
 
-for frame in camera.capture_continuous(rawCapture, format="bgr",
-                                       use_video_port=True):
+    # for frame in camera.capture_continuous(rawCapture, format="bgr",
+    #                                     use_video_port=True):
 
     # grab the raw NumPy array representing the image, then 
     # initialize the timestamp and occupied/unoccupied text
@@ -57,3 +61,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr",
     # show the frame
     cv2.imshow("Stream", image)
     key = cv2.waitKey(1) & 0xFF
+
+
+if __name__ == '__main__':
+    #img_file = myfuncs.capture_save()
+    #video_file = myfuncs.video_save(30)
+    stream_obj = io.BytesIO()
+    vid_stream = myfuncs.vid_2_stream(stream_obj, 15, True)
+    #img_pred = myfuncs.cv2_predict('../foo.jpg')
+
+    # conver to array
+    #img_arr = np.frombuffer(stream_obj.getvalue(), dtype=np.uint8)
