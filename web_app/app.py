@@ -113,7 +113,7 @@ def gen_predict():
         # TODO: 
         # possible predictions:
         # this is a set
-        egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse'}
+        egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse', 'bird'}
         
         # if any(item in egg_labels for item in label):
         # since the fake egg is one.. we only care if more than one..
