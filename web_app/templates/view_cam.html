@@ -3,7 +3,12 @@
   <h1 class="mt-4">hen cam</h1>
   <p>video should be here:
   </p>
-  
+  <form action="{{ url_for('stop_feed') }}" method="POST">
+    <input type="submit" value="stop feed"/>
+  </form>
+  <form action="{{ url_for('start_feed') }}" method="POST">
+    <input type="submit" value="start feed"/>
+  </form>
   </p>
   <img src="{{ url_for('video_feed') }}"> 
   </p>

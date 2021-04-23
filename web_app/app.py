@@ -101,6 +101,20 @@ def video_feed():
 #             stream.seek(0)
 #         return send_file(stream, mimetype='image/jpeg')
 
+@app.route('/stop_feed', methods=['GET', 'POST'])
+def stop_feed():
+    vc.release()
+    # del vc
+    return render_template("setup_recordings.html")
+
+
+@app.route('/start_feed', methods=['GET', 'POST'])
+def start_feed():
+    global vc
+    vc = cv2.VideoCapture(0)
+    time.sleep(2)
+    return render_template("view_cam.html")
+
 
 @app.route('/', methods=['GET'])
 def home():
