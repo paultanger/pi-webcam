@@ -8,6 +8,7 @@ import time
 from datetime import datetime, timedelta
 import tempfile
 from io import BytesIO
+from collections import Counter
 from twilio.rest import Client
 sys.path.insert(0, '../src/')
 #sys.path.append(os.path.join(os.path.dirname(sys.path[0]), '../src/'))
@@ -29,6 +30,11 @@ if len(sys.argv) > 2:
 else:
     start_cam = True
     vc = cv2.VideoCapture(0) # zero is the default camera on pi
+
+# initialize text time as 30 minutes earlier than app start
+# mins_30 = timedelta(minutes=30)
+# global text_time
+# text_time = datetime.now() - mins_30
 
 # app = Flask(__name__)
 app = Flask(__name__, root_path='./')# template_folder = 'templates/')
@@ -92,8 +98,12 @@ def gen():
 
 
 def gen_predict():
-    # initialize text time as 30 minutes earlier than app start
+    '''
+    This might only work if someone is actually streaming it to trigger this.. hmmm
+    
+    '''
     mins_30 = timedelta(minutes=30)
+    global text_time
     text_time = datetime.now() - mins_30
     while True:
         rval, frame = vc.read() 
@@ -109,15 +119,17 @@ def gen_predict():
             cv2.putText(output_image, f'{time_stamp}', (7, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (100, 255, 0), 1, cv2.LINE_AA)
             #cv2.imwrite('pic.jpg', output_image) 
         
-        # here is where I can check if it predicts orange (egg), and alert me..
-        # TODO: 
-        # possible predictions:
-        # this is a set
+        # here is where I can check if it predicts orange (egg), and alert me.. 
+        # possible predictions, this is a set
         egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse', 'bird'}
-        
-        # if any(item in egg_labels for item in label):
+        labels = [lab for lab in label if lab in egg_labels]
+        # only keep labels in this group
+        label_count = Counter(labels)
         # since the fake egg is one.. we only care if more than one..
-        if len(egg_labels.intersection(set(label))) > 1:
+        # if they are both predicted as the same thing, the set only counts 1
+        # if any(item in egg_labels for item in label):
+        # if len(egg_labels.intersection(set(label))) > 1:
+        if max(label_count.values()) > 1:
             # determine if I have been texted in the last 30 mins?
             time_diff = (datetime.now() - text_time).total_seconds()
             min_diff = divmod(time_diff, 60)[0]
@@ -131,6 +143,7 @@ def gen_predict():
                      to = my_phone
                  )
                 # restart time to wait 30 mins before doing again
+                #global text_time
                 text_time = datetime.now()
 
         byteArray = cv2.imencode('.jpg', output_image)[1].tobytes()
