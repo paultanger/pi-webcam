@@ -102,8 +102,8 @@ def gen_predict():
     This might only work if someone is actually streaming it to trigger this.. hmmm
     
     '''
+    # TODO: fix this.. every time a page is running it will start a new timer..
     mins_30 = timedelta(minutes=30)
-    global text_time
     text_time = datetime.now() - mins_30
     while True:
         rval, frame = vc.read() 
@@ -119,32 +119,32 @@ def gen_predict():
             cv2.putText(output_image, f'{time_stamp}', (7, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (100, 255, 0), 1, cv2.LINE_AA)
             #cv2.imwrite('pic.jpg', output_image) 
         
-        # here is where I can check if it predicts orange (egg), and alert me.. 
-        # possible predictions, this is a set
-        egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse', 'bird'}
-        labels = [lab for lab in label if lab in egg_labels]
-        # only keep labels in this group
-        label_count = Counter(labels)
-        # since the fake egg is one.. we only care if more than one..
-        # if they are both predicted as the same thing, the set only counts 1
-        # if any(item in egg_labels for item in label):
-        # if len(egg_labels.intersection(set(label))) > 1:
-        if max(label_count.values()) > 1:
-            # determine if I have been texted in the last 30 mins?
-            time_diff = (datetime.now() - text_time).total_seconds()
-            min_diff = divmod(time_diff, 60)[0]
-            if min_diff > 30:
-                # text me..
-                # client.messages.create(body = "a possible egg!",from_= twilio_phone,to = my_phone)
-                message = client.messages \
-                .create(
-                     body = "a possible egg!",
-                     from_= twilio_phone,
-                     to = my_phone
-                 )
-                # restart time to wait 30 mins before doing again
-                #global text_time
-                text_time = datetime.now()
+            # here is where I can check if it predicts orange (egg), and alert me.. 
+            # possible predictions, this is a set
+            egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse', 'bird'}
+            labels = [lab for lab in label if lab in egg_labels]
+            # only keep labels in this group
+            label_count = Counter(labels)
+            # since the fake egg is one.. we only care if more than one..
+            # if they are both predicted as the same thing, the set only counts 1
+            # if any(item in egg_labels for item in label):
+            # if len(egg_labels.intersection(set(label))) > 1:
+            if max(label_count.values()) > 1:
+                # determine if I have been texted in the last 30 mins?
+                time_diff = (datetime.now() - text_time).total_seconds()
+                min_diff = divmod(time_diff, 60)[0]
+                if min_diff > 30:
+                    # text me..
+                    # client.messages.create(body = "a possible egg!",from_= twilio_phone,to = my_phone)
+                    message = client.messages \
+                    .create(
+                        body = "a possible egg!",
+                        from_= twilio_phone,
+                        to = my_phone
+                    )
+                    # restart time to wait 30 mins before doing again
+                    #global text_time
+                    text_time = datetime.now()
 
         byteArray = cv2.imencode('.jpg', output_image)[1].tobytes()
         # don't do this for every frame
