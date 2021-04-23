@@ -85,7 +85,8 @@ def gen():
 def gen_predict():
     while True:
         rval, frame = vc.read() 
-        bbox, label, conf = cv.detect_common_objects(frame, confidence=0.3, model='yolov3-tiny')
+        # seems like 40% is good..
+        bbox, label, conf = cv.detect_common_objects(frame, confidence=0.4, model='yolov3-tiny')
         output_image = draw_bbox(frame, bbox, label, conf, write_conf=True)
         time_stamp = datetime.now().strftime('%Y %m %d %H:%M:%S') 
         if label == []:
@@ -96,7 +97,12 @@ def gen_predict():
         
         # here is where I can check if it predicts orange (egg), and alert me..
         # TODO: 
-        if 'orange' in label:
+        # possible predictions:
+        # this is a set
+        egg_labels = {'sports ball', 'orange', 'apple'}
+        
+        # if any(item in egg_labels for item in label):
+        if len(egg_labels.intersection(set(label))) > 0:
             # text me..
             pass
 

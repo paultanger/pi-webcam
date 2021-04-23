@@ -20,3 +20,10 @@ message = client.messages \
                  )
 
 print(message.sid)
+
+# can check other things like
+message.status
+message.date_sent
+
+# alternative... send email like:
+# 5551234567@vtext.com for verizon.. this is free..
