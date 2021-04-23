@@ -121,7 +121,7 @@ def gen_predict():
             # determine if I have been texted in the last 30 mins?
             time_diff = (datetime.now() - text_time).total_seconds()
             min_diff = divmod(time_diff, 60)[0]
-            if min_diff > 2:
+            if min_diff > 30:
                 # text me..
                 # client.messages.create(body = "a possible egg!",from_= twilio_phone,to = my_phone)
                 message = client.messages \
