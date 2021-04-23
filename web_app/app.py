@@ -3,14 +3,26 @@ import sys, os
 import cv2
 import picamera
 import time
+import tempfile
 from io import BytesIO
+sys.path.insert(0, '../src/')
+#sys.path.append(os.path.join(os.path.dirname(sys.path[0]), '../src/'))
+import funcs as myfuncs
+
+
+# this determines if you want to start the video cam
+if len(sys.argv) > 2:
+    start_cam = False
+    #vc = None
+else:
+    start_cam = True
+    vc = cv2.VideoCapture(0) # zero is the default camera on pi
 
 # app = Flask(__name__)
 app = Flask(__name__, root_path='./')# template_folder = 'templates/')
 # app = Flask(__name__, root_path='./', static_url_path='/Users/pault/Desktop/github/media/', 
 # app = Flask(__name__, root_path='./', static_url_path='/Users/pault/Desktop/github/media/') 
 
-vc = cv2.VideoCapture(0) # zero is the default camera on pi
 #vc.set(cv2.CAP_PROP_FRAME_WIDTH, 720)
 
 # or another way
@@ -73,6 +85,7 @@ def video_feed():
     Video streaming route. Put this in the src attribute of an img tag.
     """
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    #return Response(myfuncs.gen(vc), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 # @app.route('/video_feed', methods=['GET'])
@@ -96,7 +109,10 @@ def home():
 
 @app.route('/view_cam', methods=['GET'])
 def view_cam():
-    return render_template("view_cam.html")
+    if start_cam:
+        return render_template("view_cam.html")
+    else:
+        return f"""cam not started"""
 
 
 @app.route('/setup_recordings', methods=['GET'])
@@ -104,27 +120,26 @@ def setup_recordings():
     return render_template("setup_recordings.html")
 
 
-# @app.route('/query', methods=['GET', 'POST'])
-# def query():
-#     return render_template("query.html")
+@app.route('/get_file', methods=['GET', 'POST'])
+def get_file():
+    return send_file(the_file, as_attachment=True)
 
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():
-    record_time = int(request.form['record_time'])
+    record_time = float(request.form['record_time']) * 60
+    try:
+        # start the recording..
+        global the_file
+        the_file = myfuncs.video_save(record_time)
+        return render_template('results.html',
+                            record_time=record_time/60,
+                            the_file=the_file)
 
-    # start the recording..
+    except:
+        return f"""something isn't quite working right."""
     
 
-    # try:
-    #     pass
-    #     # n_sample = int(request.form['n_sample'])
-    #     # predict_type = request.form['predict_type']
-    # except:
-    #     return f"""You have entered an incorrect value or something isn't quite working right.
-    #                 Sorry about that!  Hit the back button and try again."""
-    return render_template('results.html',
-                            record_time=record_time)
     # return render_template('results.html', 
     #                         predict_text=predict_text, 
     #                         actual_text=actual_text, 
@@ -134,9 +149,11 @@ def results():
 
 if __name__ == '__main__':
     # test with 
-    # python app.py local
+    # python app.py local 
     # run with
-    # python app.py prod
+    # python app.py prod 
+    # if you don't want the cam to start:
+    # python app.py prod False
     if sys.argv[1] == 'local':
         app.run(host='0.0.0.0', port=8080, debug=True)
     else:

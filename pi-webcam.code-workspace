@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../yolov3-tf2"
+		},
+		{
+			"path": "../../../../tmp"
 		}
 	],
 	"settings": {}

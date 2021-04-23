@@ -1,8 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
         <h1 class="mt-4">Results</h1>
-        <p></p>k
-        <p>Thank you, recording has started, your recording time is: {{record_time}} minutes</p>
+        <p></p>
+        <p>Thank you, recording finished, your recording time is: {{record_time}} minutes</p>
+        <p>your file is: {{the_file}}</p>
+
+        <form action="{{ url_for('get_file') }}" method="POST">
+          <p>click here to download:</p>
+          <input type="submit" value="download"/>
+        </form>
       <br>
         <p> </p>
         <p> </p>
