@@ -117,7 +117,7 @@ def gen_predict():
         
         # if any(item in egg_labels for item in label):
         # since the fake egg is one.. we only care if more than one..
-        if len(egg_labels.intersection(set(label))) >= 1:
+        if len(egg_labels.intersection(set(label))) > 1:
             # determine if I have been texted in the last 30 mins?
             time_diff = (datetime.now() - text_time).total_seconds()
             min_diff = divmod(time_diff, 60)[0]
