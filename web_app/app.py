@@ -79,6 +79,9 @@ def gen():
                b'Content-Type: image/jpeg\r\n\r\n' + byteArray + b'\r\n') 
 
 
+def gen_predict():
+    pass
+
 @app.route('/video_feed', methods=['GET'])
 def video_feed():
     """
@@ -87,6 +90,18 @@ def video_feed():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
     #return Response(myfuncs.gen(vc), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+
+@app.route('/predict_feed', methods=['GET'])
+def predict_feed():
+    """
+    This is the detect version of the feed with predictions..
+    """
+    return Response(gen_predict(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/view_predict', methods=['GET'])
+def view_predict():
+        return render_template("view_predict.html")
 
 # @app.route('/video_feed', methods=['GET'])
 # def video_feed():
