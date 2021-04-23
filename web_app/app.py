@@ -5,13 +5,22 @@ import cvlib as cv
 from cvlib.object_detection import draw_bbox
 import picamera
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import tempfile
 from io import BytesIO
+from twilio.rest import Client
 sys.path.insert(0, '../src/')
 #sys.path.append(os.path.join(os.path.dirname(sys.path[0]), '../src/'))
 import funcs as myfuncs
 
+# setup twilio stuff
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+twilio_phone = os.environ['TWILIO_PHONE_NUM']
+my_phone = os.environ['MY_PHONE_NUM']
+mer_phone = os.environ['MER_PHONE_NUM']
+
+client = Client(account_sid, auth_token)
 
 # this determines if you want to start the video cam
 if len(sys.argv) > 2:
@@ -83,10 +92,15 @@ def gen():
 
 
 def gen_predict():
+    # initialize text time as 30 minutes earlier than app start
+    mins_30 = timedelta(minutes=30)
+    text_time = datetime.now() - mins_30
     while True:
         rval, frame = vc.read() 
-        # seems like 40% is good..
-        bbox, label, conf = cv.detect_common_objects(frame, confidence=0.4, model='yolov3-tiny')
+        # seems like 45% conf eliminates multiple guesses on same egg I think
+        # for nms, .5 is not enough..
+        # bbox, label, conf = cv.detect_common_objects(frame, confidence=.35, model='yolov4')
+        bbox, label, conf = cv.detect_common_objects(frame, confidence=.3, model='yolov4-tiny') #, nms_thresh=0.4)
         output_image = draw_bbox(frame, bbox, label, conf, write_conf=True)
         time_stamp = datetime.now().strftime('%Y %m %d %H:%M:%S') 
         if label == []:
@@ -99,12 +113,25 @@ def gen_predict():
         # TODO: 
         # possible predictions:
         # this is a set
-        egg_labels = {'sports ball', 'orange', 'apple'}
+        egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse'}
         
         # if any(item in egg_labels for item in label):
-        if len(egg_labels.intersection(set(label))) > 0:
-            # text me..
-            pass
+        # since the fake egg is one.. we only care if more than one..
+        if len(egg_labels.intersection(set(label))) >= 1:
+            # determine if I have been texted in the last 30 mins?
+            time_diff = (datetime.now() - text_time).total_seconds()
+            min_diff = divmod(time_diff, 60)[0]
+            if min_diff > 2:
+                # text me..
+                # client.messages.create(body = "a possible egg!",from_= twilio_phone,to = my_phone)
+                message = client.messages \
+                .create(
+                     body = "a possible egg!",
+                     from_= twilio_phone,
+                     to = my_phone
+                 )
+                # restart time to wait 30 mins before doing again
+                text_time = datetime.now()
 
         byteArray = cv2.imencode('.jpg', output_image)[1].tobytes()
         # don't do this for every frame
