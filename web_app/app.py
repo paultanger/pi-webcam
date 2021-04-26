@@ -15,11 +15,13 @@ sys.path.insert(0, '../src/')
 import funcs as myfuncs
 
 # setup twilio stuff
+# these are stored in /etc/rc.local
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
 twilio_phone = os.environ['TWILIO_PHONE_NUM']
 my_phone = os.environ['MY_PHONE_NUM']
 mer_phone = os.environ['MER_PHONE_NUM']
+lev_phone = os.environ['LEV_PHONE_NUM']
 
 client = Client(account_sid, auth_token)
 
@@ -32,9 +34,10 @@ else:
     vc = cv2.VideoCapture(0) # zero is the default camera on pi
 
 # initialize text time as 30 minutes earlier than app start
-# mins_30 = timedelta(minutes=30)
-# global text_time
-# text_time = datetime.now() - mins_30
+mins_30 = timedelta(minutes=30)
+global text_time
+text_time = datetime.now() - mins_30
+print(f'app starting time minus 30 mins: {text_time}')
 
 # app = Flask(__name__)
 app = Flask(__name__, root_path='./')# template_folder = 'templates/')
@@ -98,13 +101,16 @@ def gen():
 
 
 def gen_predict():
+#def gen_predict(text_time=text_time):
     '''
     This might only work if someone is actually streaming it to trigger this.. hmmm
     
     '''
     # TODO: fix this.. every time a page is running it will start a new timer..
-    mins_30 = timedelta(minutes=30)
-    text_time = datetime.now() - mins_30
+    # mins_30 = timedelta(minutes=30)
+    # text_time = datetime.now() - mins_30
+    # setup global var as something we can modify here
+    global text_time
     while True:
         rval, frame = vc.read() 
         # seems like 45% conf eliminates multiple guesses on same egg I think
@@ -133,18 +139,27 @@ def gen_predict():
                 # determine if I have been texted in the last 30 mins?
                 time_diff = (datetime.now() - text_time).total_seconds()
                 min_diff = divmod(time_diff, 60)[0]
-                if min_diff > 30:
+                if min_diff >= 30:
                     # text me..
                     # client.messages.create(body = "a possible egg!",from_= twilio_phone,to = my_phone)
+                    # text me
                     message = client.messages \
                     .create(
                         body = "a possible egg!",
                         from_= twilio_phone,
                         to = my_phone
                     )
+                    # text Levitie
+                    # message = client.messages \
+                    # .create(
+                    #     body = "a possible egg!",
+                    #     from_= twilio_phone,
+                    #     to = lev_phone
+                    # )
                     # restart time to wait 30 mins before doing again
                     #global text_time
                     text_time = datetime.now()
+                    print(f'sent text and resetting time to {text_time}')
 
         byteArray = cv2.imencode('.jpg', output_image)[1].tobytes()
         # don't do this for every frame
