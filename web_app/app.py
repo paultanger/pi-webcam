@@ -135,10 +135,12 @@ def gen_predict():
             # if they are both predicted as the same thing, the set only counts 1
             # if any(item in egg_labels for item in label):
             # if len(egg_labels.intersection(set(label))) > 1:
-            if max(label_count.values()) > 1:
+            
+            if len(label_count) > 1:
                 # determine if I have been texted in the last 30 mins?
                 time_diff = (datetime.now() - text_time).total_seconds()
                 min_diff = divmod(time_diff, 60)[0]
+                print(min_diff)
                 if min_diff >= 30:
                     # text me..
                     # client.messages.create(body = "a possible egg!",from_= twilio_phone,to = my_phone)
@@ -158,7 +160,8 @@ def gen_predict():
                     # )
                     # restart time to wait 30 mins before doing again
                     #global text_time
-                    text_time = datetime.now()
+                    # also round it so it doesn't consider ms if two pages running..
+                    text_time = datetime.now().replace(second=0, microsecond=0)
                     print(f'sent text and resetting time to {text_time}')
 
         byteArray = cv2.imencode('.jpg', output_image)[1].tobytes()
