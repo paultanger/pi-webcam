@@ -14,6 +14,12 @@ sys.path.insert(0, '../src/')
 #sys.path.append(os.path.join(os.path.dirname(sys.path[0]), '../src/'))
 import funcs as myfuncs
 
+# for log..
+print('-------------------------------------------------------------')
+print('----------------- new app instance --------------------------')
+print('-------------------------------------------------------------')
+print(f'app start time: {datetime.now()}')
+
 # setup twilio stuff
 # these are stored in /etc/rc.local
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
@@ -25,6 +31,9 @@ lev_phone = os.environ['LEV_PHONE_NUM']
 dor_phone = os.environ['DOR_PHONE_NUM']
 
 client = Client(account_sid, auth_token)
+
+# wait a bit before trying camera
+time.sleep(2)
 
 # this determines if you want to start the video cam
 if len(sys.argv) > 2:
@@ -51,7 +60,7 @@ app = Flask(__name__, root_path='./')# template_folder = 'templates/')
 # https://www.pyimagesearch.com/2017/02/06/faster-video-file-fps-with-cv2-videocapture-and-opencv/
 
 # allow the camera to warmup
-time.sleep(1)
+time.sleep(2)
 
 # convert to opencv compatible
 # image = np.empty((240 * 320 * 3,), dtype=np.uint8)
@@ -280,6 +289,7 @@ if __name__ == '__main__':
     # python app.py prod 
     # if you don't want the cam to start:
     # python app.py prod False
+    print('starting app..')
     if sys.argv[1] == 'local':
         app.run(host='0.0.0.0', port=8080, debug=True)
     else:

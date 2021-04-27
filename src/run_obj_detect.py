@@ -84,14 +84,14 @@ def main():
                         # text Levitie
                         message = client.messages \
                         .create(
-                            body = "a possible egg!",
+                            body = "a possible egg! via detect script",
                             from_= twilio_phone,
                             to = lev_phone
                         )
-                        # text Dorothy
+                        # # text Dorothy
                         message = client.messages \
                         .create(
-                            body = "testing hen cam",
+                            body = "a possible egg! via detect script",
                             from_= twilio_phone,
                             to = dor_phone
                         )
