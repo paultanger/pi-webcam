@@ -22,6 +22,7 @@ twilio_phone = os.environ['TWILIO_PHONE_NUM']
 my_phone = os.environ['MY_PHONE_NUM']
 mer_phone = os.environ['MER_PHONE_NUM']
 lev_phone = os.environ['LEV_PHONE_NUM']
+dor_phone = os.environ['DOR_PHONE_NUM']
 
 client = Client(account_sid, auth_token)
 
@@ -140,7 +141,6 @@ def gen_predict():
                 # determine if I have been texted in the last 30 mins?
                 time_diff = (datetime.now() - text_time).total_seconds()
                 min_diff = divmod(time_diff, 60)[0]
-                print(min_diff)
                 if min_diff >= 30:
                     # text me..
                     # client.messages.create(body = "a possible egg!",from_= twilio_phone,to = my_phone)
@@ -158,11 +158,19 @@ def gen_predict():
                     #     from_= twilio_phone,
                     #     to = lev_phone
                     # )
+                    # text Dorothy
+                    # message = client.messages \
+                    # .create(
+                    #     body = "a possible egg!",
+                    #     from_= twilio_phone,
+                    #     to = dor_phone
+                    # )
                     # restart time to wait 30 mins before doing again
                     #global text_time
                     # also round it so it doesn't consider ms if two pages running..
                     text_time = datetime.now().replace(second=0, microsecond=0)
                     print(f'sent text and resetting time to {text_time}')
+                    app.logger.info(f'sent text and resetting time to {text_time}')
 
         byteArray = cv2.imencode('.jpg', output_image)[1].tobytes()
         # don't do this for every frame
