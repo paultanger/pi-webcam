@@ -161,19 +161,19 @@ def gen_predict():
                         to = my_phone
                     )
                     # text Levitie
-                    # message = client.messages \
-                    # .create(
-                    #     body = "a possible egg!",
-                    #     from_= twilio_phone,
-                    #     to = lev_phone
-                    # )
+                    message = client.messages \
+                    .create(
+                        body = "a possible egg!",
+                        from_= twilio_phone,
+                        to = lev_phone
+                    )
                     # text Dorothy
-                    # message = client.messages \
-                    # .create(
-                    #     body = "a possible egg!",
-                    #     from_= twilio_phone,
-                    #     to = dor_phone
-                    # )
+                    message = client.messages \
+                    .create(
+                        body = "a possible egg!",
+                        from_= twilio_phone,
+                        to = dor_phone
+                    )
                     # restart time to wait 30 mins before doing again
                     #global text_time
                     # also round it so it doesn't consider ms if two pages running..

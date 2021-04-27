@@ -47,24 +47,24 @@ def main():
         logging.info('starting while loop')
         # while we are still checking frames.. check 10
         for i in range(10):
-            logging.info(f'starting for loop for 10 frames iter: {i}')
+            # logging.info(f'starting for loop for 10 frames iter: {i}')
             # setup current time
             # current_time = datetime.datetime.now().replace(second=0, microsecond=0)
             # if haven't texted lately..
             time_diff = (datetime.datetime.now() - text_time).total_seconds()
             min_diff = divmod(time_diff, 60)[0]
-            logging.info(f'time between current time and text time is: {min_diff} mins')
+            # logging.info(f'time between current time and text time is: {min_diff} mins')
             # if time in range, check if camera available
             #breakpoint()
             vc = cv2.VideoCapture(0)
             time.sleep(1)
             if current_time <= end and current_time >= start and min_diff >= 30 and vc.isOpened() == True:
-                logging.info('in if stmt to run obj detect')
+                # logging.info('in if stmt to run obj detect')
                 # if it is, run obj detect
                 rval, frame = vc.read() 
                 bbox, label, conf = cv.detect_common_objects(frame, confidence=.3, model='yolov4-tiny')
                 if label != []:
-                    logging.info('something predicted..')
+                    # logging.info('something predicted..')
                     labels = [lab for lab in label if lab in egg_labels]
                     # only keep labels in this group
                     label_count = Counter(labels)
@@ -102,9 +102,9 @@ def main():
                 # close our attempt at vc
                 vc.release()
             else:
-                logging.info('time not in range, or texted recently or vc not available')
+                # logging.info('time not in range, or texted recently or vc not available')
         # then wait 5 mins before checking again
-        logging.info('checked 10 times, waiting 5 mins..')
+        # logging.info('checked 10 times, waiting 5 mins..')
         # for testing:
         #time.sleep(3)
         time.sleep(300)
