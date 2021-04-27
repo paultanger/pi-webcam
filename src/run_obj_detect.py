@@ -1,6 +1,6 @@
 # this script checks if camera is accessible,
 # if it is, that means it is not streaming and object detection isn't happening
-# so then it checks a couple frames, and then sleeps for 5 minutes
+# so then it checks 10 frames, and then sleeps for 5 minutes
 # it does this only during certain egg laying hours
 
 # this script also needs to be started separately from the app..
@@ -49,6 +49,7 @@ def main():
             min_diff = divmod(time_diff, 60)[0]
             # if time in range, check if camera available
             vc = cv2.VideoCapture(0)
+            time.sleep(1)
             if current_time <= end and current_time >= start and time_diff >= 30 and vc.isOpened() == True:
                 print('in if stmt to run obj detect')
                 # if it is, run obj detect
@@ -58,7 +59,11 @@ def main():
                     labels = [lab for lab in label if lab in egg_labels]
                     # only keep labels in this group
                     label_count = Counter(labels)
-                    if len(label_count) > 1:
+                    # setup two test cases to check
+                    # label_count = {'bird': 2}
+                    # label_count = {'bird':1, 'clock':1}
+                    # label_count = Counter() # this is an empty.. it shouldn't get here, but for some reason sometimes it does
+                    if len(label_count) > 1 or max(label_count.values(), default=-999) > 1:
                         # text me..
                         message = client.messages \
                         .create(
@@ -88,7 +93,7 @@ def main():
             else:
                 print('time not in range, or texted recently or vc not available')
         # then wait 5 mins before checking again
-        print('checked 10 frames, waiting 5 mins..')
+        print('checked 10 times, waiting 5 mins..')
         # for testing:
         #time.sleep(3)
         time.sleep(300)

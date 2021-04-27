@@ -13,7 +13,7 @@
 			"path": "../../../../tmp"
 		},
 		{
-			"path": "../../../../etc"
+			"path": "../../../../etc/python_log_files"
 		}
 	],
 	"settings": {}
