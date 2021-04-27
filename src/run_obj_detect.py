@@ -102,6 +102,7 @@ def main():
                 # close our attempt at vc
                 vc.release()
             else:
+                pass
                 # logging.info('time not in range, or texted recently or vc not available')
         # then wait 5 mins before checking again
         # logging.info('checked 10 times, waiting 5 mins..')
