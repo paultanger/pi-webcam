@@ -40,11 +40,11 @@ def main():
     text_time = current_time - mins_30
     logging.info(f'setting text_time as {text_time}')
     # setup morning time range
-    start = datetime.datetime.now().replace(hour=6, minute=30, second=0, microsecond=0)
-    end = datetime.datetime.now().replace(hour=12, minute=30, second=0, microsecond=0)
+    start = datetime.datetime.now().replace(hour=7, minute=15, second=0, microsecond=0)
+    end = datetime.datetime.now().replace(hour=16, minute=30, second=0, microsecond=0)
 
     while True:
-        logging.info('starting while loop')
+        # logging.info('starting while loop')
         # while we are still checking frames.. check 10
         for i in range(10):
             # logging.info(f'starting for loop for 10 frames iter: {i}')
