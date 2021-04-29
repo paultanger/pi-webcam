@@ -98,6 +98,8 @@ def main():
                         # restart time to wait 30 mins before doing again
                         text_time = datetime.datetime.now().replace(second=0, microsecond=0)
                         logging.info(f'resetting text time to: {text_time}')
+                        # wait so we don't check any more frames..
+                        time.sleep(3)
                 # if we didn't trigger anything, check 10 more frames...
                 # close our attempt at vc
                 vc.release()
