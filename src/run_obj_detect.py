@@ -34,7 +34,7 @@ def main():
     current_time = datetime.datetime.now().replace(second=0, microsecond=0)
     logging.info(f'setting func start time as {current_time}')
     # possible predictions, this is a set
-    egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse', 'bird'}
+    egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse'}
     # setup first text time when this script starts, minus 30 mins
     mins_30 = datetime.timedelta(minutes=30) 
     text_time = current_time - mins_30

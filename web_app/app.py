@@ -137,7 +137,7 @@ def gen_predict():
         
             # here is where I can check if it predicts orange (egg), and alert me.. 
             # possible predictions, this is a set
-            egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse', 'bird'}
+            egg_labels = {'sports ball', 'orange', 'apple', 'bowl', 'clock', 'mouse'}
             labels = [lab for lab in label if lab in egg_labels]
             # only keep labels in this group
             label_count = Counter(labels)
