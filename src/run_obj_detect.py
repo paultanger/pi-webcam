@@ -62,6 +62,10 @@ def main():
                 # logging.info('in if stmt to run obj detect')
                 # if it is, run obj detect
                 rval, frame = vc.read() 
+                
+                # flip frame (depending on how we setup the camera)
+                frame = cv2.flip(frame, 0)
+
                 bbox, label, conf = cv.detect_common_objects(frame, confidence=.3, model='yolov4-tiny')
                 if label != []:
                     # logging.info('something predicted..')

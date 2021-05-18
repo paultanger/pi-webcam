@@ -82,6 +82,9 @@ def gen():
         # resizing the frame size according to our need
         #frame = cv2.resize(frame, (1920, 1080)) # width height default 480 x 640
 
+        # flip frame (depending on how we setup the camera)
+        frame = cv2.flip(frame, 0)
+
         # font which we will be using to display FPS
         font = cv2.FONT_HERSHEY_SIMPLEX
         # time when we finish processing for this frame
@@ -123,6 +126,10 @@ def gen_predict():
     global text_time
     while True:
         rval, frame = vc.read() 
+
+        # flip frame (depending on how we setup the camera)
+        frame = cv2.flip(frame, 0)
+
         # seems like 45% conf eliminates multiple guesses on same egg I think
         # for nms, .5 is not enough..
         # bbox, label, conf = cv.detect_common_objects(frame, confidence=.35, model='yolov4')
