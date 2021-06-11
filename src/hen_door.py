@@ -11,47 +11,44 @@ def setup():
     # Set the GPIO modes to BCM Numbering
     GPIO.setmode(GPIO.BCM)
     # Set pin mode to output, and initial level to High(3.3v)
-    GPIO.setup(open_door_pin, GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.setup(open_door_pin, GPIO.OUT, initial=0)
 
     # do the same for control of other direction
-    GPIO.setup(close_door_pin, GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.setup(close_door_pin, GPIO.OUT, initial=0)
 
 
 def activate_door(open_or_close):
-    # while True:
-    #     print ('motor open door')
-    #     GPIO.output(open_door_pin, GPIO.LOW)
-    #     #GPIO.output(close_door_pin, GPIO.LOW)
-    #     time.sleep(3)
-    #     print ('motor close door')
-    #     GPIO.output(open_door_pin, GPIO.HIGH)
-    #     #GPIO.output(close_door_pin, GPIO.HIGH)
-    #     time.sleep(2)
     
-
+    # while True:
     if open_or_close == 'open':
         print ('motor open door')
-        GPIO.output(open_door_pin, GPIO.LOW)
-        #GPIO.output(close_door_pin, GPIO.LOW)
+        GPIO.output(open_door_pin, GPIO.HIGH)
+        GPIO.output(close_door_pin, GPIO.LOW)
         time.sleep(3)
+        destroy()
 
     if open_or_close == 'close':
         print ('motor close door')
-        GPIO.output(open_door_pin, GPIO.HIGH)
+        GPIO.output(open_door_pin, GPIO.LOW)
         GPIO.output(close_door_pin, GPIO.HIGH)
         time.sleep(2)
+        destroy()
 
 
 # Define a destroy function for clean up everything after the script finished
 def destroy():
     # Turn off
-    GPIO.output(open_door_pin, GPIO.HIGH)
-    GPIO.output(close_door_pin, GPIO.HIGH)
+    GPIO.output(open_door_pin, 0)
+    GPIO.output(close_door_pin, 0)
     # Release resource
     GPIO.cleanup()
 
 
 if __name__ == '__main__':
+    # run with:
+    # python hen_door.py open
+    # python hen_door.py close
+    
     the_command = sys.argv[1]
     print(the_command)
 
