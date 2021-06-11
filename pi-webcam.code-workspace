@@ -14,6 +14,9 @@
 		},
 		{
 			"path": "../../../../etc/python_log_files"
+		},
+		{
+			"path": "../davinci-kit-for-raspberry-pi"
 		}
 	],
 	"settings": {}
