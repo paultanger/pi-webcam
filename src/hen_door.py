@@ -17,21 +17,21 @@ def setup():
     GPIO.setup(close_door_pin, GPIO.OUT, initial=0)
 
 
-def activate_door(open_or_close):
+def activate_door(open_or_close, on_time):
     
     # while True:
-    if open_or_close == 'open':
-        print ('motor open door')
-        GPIO.output(open_door_pin, GPIO.HIGH)
-        GPIO.output(close_door_pin, GPIO.LOW)
-        time.sleep(3)
-        destroy()
-
     if open_or_close == 'close':
         print ('motor close door')
+        GPIO.output(open_door_pin, GPIO.HIGH)
+        GPIO.output(close_door_pin, GPIO.LOW)
+        time.sleep(on_time)
+        destroy()
+
+    if open_or_close == 'open':
+        print ('motor open door')
         GPIO.output(open_door_pin, GPIO.LOW)
         GPIO.output(close_door_pin, GPIO.HIGH)
-        time.sleep(2)
+        time.sleep(on_time)
         destroy()
 
 
@@ -46,16 +46,18 @@ def destroy():
 
 if __name__ == '__main__':
     # run with:
-    # python hen_door.py open
-    # python hen_door.py close
+    # python hen_door.py open 25
+    # python hen_door.py close 25
     
     the_command = sys.argv[1]
+    on_time = float(sys.argv[2])
     print(the_command)
+    print(on_time)
 
     setup()
 
     try:
-        activate_door(the_command)
+        activate_door(the_command, on_time)
     # When 'Ctrl+C' is pressed, the program destroy() will be  executed.
     except KeyboardInterrupt:
         destroy()
