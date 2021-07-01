@@ -323,7 +323,7 @@ def door_open():
 def door_close():
     try:
         door_funcs.setup(open_door_pin, close_door_pin)
-        door_funcs.activate_door('close', 25, open_door_pin, close_door_pin)
+        door_funcs.activate_door('close', 26, open_door_pin, close_door_pin)
     except:
         return render_template("index.html")
     return render_template("hen_door.html")

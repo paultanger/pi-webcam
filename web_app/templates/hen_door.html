@@ -3,11 +3,11 @@
   <h1 class="mt-4"></h1>
   <p>hen door</p>
   </p>
-  <form action="{{ url_for('door_open') }}" method="POST">
+  <form action="{{ url_for('door_close') }}" method="POST">
     <input type="submit" value="open door"/>
   </form>
 </p>
-  <form action="{{ url_for('door_close') }}" method="POST">
+  <form action="{{ url_for('door_open') }}" method="POST">
     <input type="submit" value="close door"/>
   </p>
   </form>
@@ -17,8 +17,8 @@
   </p>
   <p>choose door direction</p>
     <select name="direction">
-      <option value="open">open</option>
-      <option value="close">close</option>
+      <option value="open">close</option>
+      <option value="close">open</option>
     </select>
   </p>
     <input type="submit" value="custom door command"/>
