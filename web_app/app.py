@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, Response, send_file
+from flask_basicauth import BasicAuth
 import sys, os
 import cv2
 import cvlib as cv
@@ -73,6 +74,11 @@ time.sleep(2)
 # image = np.empty((240 * 320 * 3,), dtype=np.uint8)
 # camera.capture(image, 'bgr')
 # image = image.reshape((240, 320, 3))
+
+# setup login
+app.config['BASIC_AUTH_USERNAME'] = os.environ['app_user']
+app.config['BASIC_AUTH_PASSWORD'] = os.environ['app_pass']
+basic_auth = BasicAuth(app)
 
 def gen():
     """
@@ -265,6 +271,7 @@ def view_cam():
 
 
 @app.route('/setup_recordings', methods=['GET'])
+@basic_auth.required
 def setup_recordings():
     return render_template("setup_recordings.html")
 
@@ -297,6 +304,7 @@ def results():
 
 
 @app.route('/hen_door', methods=['GET', 'POST'])
+@basic_auth.required
 def hen_door():
     return render_template("hen_door.html")
 
