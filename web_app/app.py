@@ -13,6 +13,10 @@ from twilio.rest import Client
 sys.path.insert(0, '../src/')
 #sys.path.append(os.path.join(os.path.dirname(sys.path[0]), '../src/'))
 import funcs as myfuncs
+import hen_door as door_funcs
+
+# setup hen door - these are pins
+door_funcs.setup(17, 18)
 
 # for log..
 print('-------------------------------------------------------------')
@@ -287,6 +291,23 @@ def results():
     #                         actual_text=actual_text, 
     #                         img_paths=img_paths,
     #                         data=result.to_html(index=False, classes=["table", "text-right", "table-hover"], border=0))
+
+
+@app.route('/hen_door', methods=['GET', 'POST'])
+def hen_door():
+    return render_template("hen_door.html")
+
+
+@app.route('/door_open', methods=['GET', 'POST'])
+def door_open():
+    door_funcs.activate_door('open', 25)
+    return render_template("hen_door.html")
+
+
+@app.route('/door_close', methods=['GET', 'POST'])
+def door_close():
+    door_funcs.activate_door('close', 25)
+    return render_template("hen_door.html")
 
 
 if __name__ == '__main__':

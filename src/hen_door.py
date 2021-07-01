@@ -7,7 +7,7 @@ import sys
 open_door_pin = 17
 close_door_pin = 18
 
-def setup():
+def setup(open_door_pin, close_door_pin):
     # Set the GPIO modes to BCM Numbering
     GPIO.setmode(GPIO.BCM)
     # Set pin mode to output, and initial level to High(3.3v)
