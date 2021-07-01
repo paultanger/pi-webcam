@@ -329,6 +329,18 @@ def door_close():
     return render_template("hen_door.html")
 
 
+@app.route('/custom_door', methods=['GET', 'POST'])
+def custom_door():
+    time = float(request.form['time'])
+    direction = request.form['direction']
+    try:
+        door_funcs.setup(open_door_pin, close_door_pin)
+        door_funcs.activate_door(direction, time, open_door_pin, close_door_pin)
+    except:
+        return render_template("index.html")
+    return render_template("hen_door.html")
+
+
 if __name__ == '__main__':
     # test with 
     # python app.py local 
