@@ -17,7 +17,7 @@ def setup(open_door_pin, close_door_pin):
     GPIO.setup(close_door_pin, GPIO.OUT, initial=0)
 
 
-def activate_door(open_or_close, on_time):
+def activate_door(open_or_close, on_time, open_door_pin=17, close_door_pin=18):
     
     # while True:
     if open_or_close == 'close':
@@ -25,18 +25,18 @@ def activate_door(open_or_close, on_time):
         GPIO.output(open_door_pin, GPIO.HIGH)
         GPIO.output(close_door_pin, GPIO.LOW)
         time.sleep(on_time)
-        destroy()
+        destroy(open_door_pin, close_door_pin)
 
     if open_or_close == 'open':
         print ('motor open door')
         GPIO.output(open_door_pin, GPIO.LOW)
         GPIO.output(close_door_pin, GPIO.HIGH)
         time.sleep(on_time)
-        destroy()
+        destroy(open_door_pin, close_door_pin)
 
 
 # Define a destroy function for clean up everything after the script finished
-def destroy():
+def destroy(open_door_pin, close_door_pin):
     # Turn off
     GPIO.output(open_door_pin, 0)
     GPIO.output(close_door_pin, 0)

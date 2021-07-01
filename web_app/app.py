@@ -17,6 +17,9 @@ import hen_door as door_funcs
 
 # setup hen door - these are pins
 door_funcs.setup(17, 18)
+# setup pins
+open_door_pin = 17
+close_door_pin = 18
 
 # for log..
 print('-------------------------------------------------------------')
@@ -300,13 +303,21 @@ def hen_door():
 
 @app.route('/door_open', methods=['GET', 'POST'])
 def door_open():
-    door_funcs.activate_door('open', 25)
+    try:
+        door_funcs.setup(open_door_pin, close_door_pin)
+        door_funcs.activate_door('open', 25, open_door_pin, close_door_pin)
+    except:
+        return render_template("index.html")
     return render_template("hen_door.html")
 
 
 @app.route('/door_close', methods=['GET', 'POST'])
 def door_close():
-    door_funcs.activate_door('close', 25)
+    try:
+        door_funcs.setup(open_door_pin, close_door_pin)
+        door_funcs.activate_door('close', 25, open_door_pin, close_door_pin)
+    except:
+        return render_template("index.html")
     return render_template("hen_door.html")
 
 
