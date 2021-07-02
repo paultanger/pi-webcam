@@ -16,11 +16,12 @@ sys.path.insert(0, '../src/')
 import funcs as myfuncs
 import hen_door as door_funcs
 
-# setup hen door - these are pins
-door_funcs.setup(17, 18)
 # setup pins
 open_door_pin = 17
 close_door_pin = 18
+
+# setup hen door - these are pins
+door_funcs.setup(open_door_pin, close_door_pin)
 
 # for log..
 print('-------------------------------------------------------------')
