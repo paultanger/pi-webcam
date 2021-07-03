@@ -28,7 +28,7 @@ def main(open_time, close_time):
 
     logging.info('starting hen door func...')
     # setup current_time
-    current_time = datetime.datetime.now().replace(second=0, microsecond=0)
+    current_time = datetime.datetime.now().replace(microsecond=0).time()
     logging.info(f'setting hen door func current time as {current_time}')
 
     # setup current status of door..
@@ -49,7 +49,7 @@ def main(open_time, close_time):
     while True:
         # logging.info('starting or continuing hen door while loop to check time...')
         # check time
-        current_time = datetime.datetime.now().replace(second=0, microsecond=0)
+        current_time = datetime.datetime.now().replace(microsecond=0).time()
         # logging.info(f'current time is: {current_time}')
 
         # if time is in range..
@@ -78,7 +78,7 @@ def main(open_time, close_time):
         # then wait 2.5 mins before checking again
         # logging.info(f'waiting for 2.5 mins because current time is {current_time}')
         time.sleep(150)
-        current_time = datetime.datetime.now().replace(second=0, microsecond=0)
+        current_time = datetime.datetime.now().replace(microsecond=0).time()
         # logging.info(f'ok done waiting because current time is {current_time}')
         # logging.info(f'now we go back to start of while loop because current time is {current_time}')
         
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     logging.info('----------------- new door log instance ---------------------')
     logging.info('-------------------------------------------------------------')
     # setup open and close times
-    open_time = datetime.datetime.now().replace(hour=6, minute=30, second=0, microsecond=0)
-    close_time = datetime.datetime.now().replace(hour=21, minute=0, second=0, microsecond=0)
+    open_time = datetime.datetime.now().replace(hour=6, minute=30, microsecond=0).time()
+    close_time = datetime.datetime.now().replace(hour=21, minute=0, microsecond=0).time()
     # just run this indefinately..
     main(open_time, close_time)
