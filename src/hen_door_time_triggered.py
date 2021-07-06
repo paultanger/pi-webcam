@@ -36,6 +36,8 @@ def main(open_time, close_time):
     # this only gets complicated if we start pi and door is closed
     # when it should be open..
     # assume it is in correct position..
+    # TODO: maybe we can track the time in each direction to correct if needed
+    # and also to define time limits in both direction just in case..
     if current_time >= open_time and current_time <= close_time:
         door_open = True
         logging.info(f'setting door as open because: current time is {current_time}'
@@ -93,7 +95,7 @@ if __name__ == '__main__':
     logging.info('----------------- new door log instance ---------------------')
     logging.info('-------------------------------------------------------------')
     # setup open and close times
-    open_time = datetime.datetime.now().replace(hour=6, minute=30, microsecond=0).time()
-    close_time = datetime.datetime.now().replace(hour=21, minute=0, microsecond=0).time()
+    open_time = datetime.datetime.now().replace(hour=6, minute=30, second=0, microsecond=0).time()
+    close_time = datetime.datetime.now().replace(hour=21, minute=0, second=0, microsecond=0).time()
     # just run this indefinately..
     main(open_time, close_time)
