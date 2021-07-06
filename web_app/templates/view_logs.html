@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mt-4">view log files</h1>
+<form action="{{ url_for('view_logs_result') }}" method="POST">
+  <select name="log_file">
+    <option value="door_log">door log</option>
+    <option value="app_log">app log</option>
+    </select>
+    <p></p>
+    <p>once you have selected the options, click below:</p>
+    <input type="submit" value="view results"/>
+</form>
+{% endblock %}

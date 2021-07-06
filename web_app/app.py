@@ -342,6 +342,27 @@ def custom_door():
     return render_template("hen_door.html")
 
 
+@app.route('/view_logs', methods=['GET', 'POST'])
+@basic_auth.required
+def view_logs():
+    return render_template("view_logs.html")
+
+
+@app.route('/view_logs_result', methods=['GET', 'POST'])
+def view_logs_result():
+    log_file = request.form['log_file']
+    if log_file == 'door_log':
+        log_file = '/etc/python_log_files/door_log.log'
+    else:
+        log_file = '/etc/python_log_files/app_log.log'
+    try:
+        # pull up log file
+        with open(log_file, "r") as file:
+            content = file.read()
+        return render_template("view_logs_result.html", log_file=log_file, content=content)
+    except:
+        return render_template("index.html")
+
 if __name__ == '__main__':
     # test with 
     # python app.py local 
