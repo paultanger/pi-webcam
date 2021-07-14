@@ -6,8 +6,9 @@ import sys
 # setup pins
 open_door_pin = 17
 close_door_pin = 18
+button_pin = 10
 
-def setup(open_door_pin, close_door_pin):
+def setup(open_door_pin, close_door_pin, button_pin):
     # Set the GPIO modes to BCM Numbering
     GPIO.setmode(GPIO.BCM)
     # Set pin mode to output, and initial level to High(3.3v)
@@ -16,9 +17,20 @@ def setup(open_door_pin, close_door_pin):
     # do the same for control of other direction
     GPIO.setup(close_door_pin, GPIO.OUT, initial=0)
 
+    # and button pin
+    # low state when not pushed, high state when pushed
+    GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-def activate_door(open_or_close, on_time, open_door_pin=17, close_door_pin=18):
+
+def activate_door(open_or_close, on_time, open_door_pin=17, close_door_pin=18,
+                    button_pin=10):
     
+    # Setup event on pin 10 rising edge
+    GPIO.add_event_detect(button_pin,
+                            GPIO.RISING,
+                            # later add a func to do things when triggered..
+                            callback=print('button triggered')) 
+
     # while True:
     if open_or_close == 'close':
         print ('motor close door')
