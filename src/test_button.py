@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 import time
 import sys
 
-button_pin = 27
+button_pin = 4
 
 GPIO.setmode(GPIO.BCM)
 
@@ -46,7 +46,7 @@ def button_callback(channel): # channel is what pin triggered callback
 
 if __name__ == '__main__':
 
-    button_pin = 27
+    button_pin = 4
 
     # try:
     #     while True:
