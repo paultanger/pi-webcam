@@ -16,6 +16,9 @@ import hen_door as door_funcs
 open_door_pin = 17
 close_door_pin = 18
 
+open_door_pin = 26
+close_door_pin = 20 
+
 # setup hen door - these are pins
 door_funcs.setup(open_door_pin, close_door_pin)
 

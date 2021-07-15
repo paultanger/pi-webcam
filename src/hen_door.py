@@ -7,6 +7,10 @@ import sys
 open_door_pin = 17
 close_door_pin = 18
 
+# with new relay, it has default pins.. not sure how to change..
+open_door_pin = 26
+close_door_pin = 20 
+
 def setup(open_door_pin, close_door_pin):
     # Set the GPIO modes to BCM Numbering
     GPIO.setmode(GPIO.BCM)
@@ -17,7 +21,7 @@ def setup(open_door_pin, close_door_pin):
     GPIO.setup(close_door_pin, GPIO.OUT, initial=0)
 
 
-def activate_door(open_or_close, on_time, open_door_pin=17, close_door_pin=18):
+def activate_door(open_or_close, on_time, open_door_pin=26, close_door_pin=20):
     
     # while True:
     if open_or_close == 'close':
@@ -54,10 +58,16 @@ if __name__ == '__main__':
     print(the_command)
     print(on_time)
 
-    setup()
+    open_door_pin = 17
+    close_door_pin = 18
+
+    open_door_pin = 26
+    close_door_pin = 20 
+
+    setup(open_door_pin, close_door_pin)
 
     try:
-        activate_door(the_command, on_time)
+        activate_door(the_command, on_time, open_door_pin, close_door_pin)
     # When 'Ctrl+C' is pressed, the program destroy() will be  executed.
     except KeyboardInterrupt:
-        destroy()
+        destroy(open_door_pin, close_door_pin)
