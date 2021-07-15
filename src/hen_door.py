@@ -8,7 +8,7 @@ open_door_pin = 17
 close_door_pin = 18
 button_pin = 10
 
-def setup(open_door_pin, close_door_pin, button_pin):
+def setup(open_door_pin, close_door_pin, button_pin=10):
     # Set the GPIO modes to BCM Numbering
     GPIO.setmode(GPIO.BCM)
     # Set pin mode to output, and initial level to High(3.3v)
@@ -29,7 +29,9 @@ def activate_door(open_or_close, on_time, open_door_pin=17, close_door_pin=18,
     GPIO.add_event_detect(button_pin,
                             GPIO.RISING,
                             # later add a func to do things when triggered..
-                            callback=print('button triggered')) 
+                            callback=print('button triggered'))
+
+    # while event not true?
 
     # while True:
     if open_or_close == 'close':
@@ -37,21 +39,22 @@ def activate_door(open_or_close, on_time, open_door_pin=17, close_door_pin=18,
         GPIO.output(open_door_pin, GPIO.HIGH)
         GPIO.output(close_door_pin, GPIO.LOW)
         time.sleep(on_time)
-        destroy(open_door_pin, close_door_pin)
+        destroy(open_door_pin, close_door_pin, button_pin)
 
     if open_or_close == 'open':
         print ('motor open door')
         GPIO.output(open_door_pin, GPIO.LOW)
         GPIO.output(close_door_pin, GPIO.HIGH)
         time.sleep(on_time)
-        destroy(open_door_pin, close_door_pin)
+        destroy(open_door_pin, close_door_pin, button_pin)
 
 
 # Define a destroy function for clean up everything after the script finished
-def destroy(open_door_pin, close_door_pin):
+def destroy(open_door_pin, close_door_pin, button_pin):
     # Turn off
     GPIO.output(open_door_pin, 0)
     GPIO.output(close_door_pin, 0)
+    GPIO.output(button_pin, 0)
     # Release resource
     GPIO.cleanup()
 

@@ -15,9 +15,10 @@ import hen_door as door_funcs
 # setup pins
 open_door_pin = 17
 close_door_pin = 18
+button_pin = 10
 
 # setup hen door - these are pins
-door_funcs.setup(open_door_pin, close_door_pin)
+door_funcs.setup(open_door_pin, close_door_pin, button_pin)
 
 def main(open_time, close_time):
     '''
@@ -58,8 +59,9 @@ def main(open_time, close_time):
         if current_time >= open_time and current_time <= close_time and door_open == False:
             # then open door..
             try:
-                door_funcs.setup(open_door_pin, close_door_pin)
-                door_funcs.activate_door('close', 26, open_door_pin, close_door_pin)
+                door_funcs.setup(open_door_pin, close_door_pin, button_pin)
+                door_funcs.activate_door('close', 26, open_door_pin, close_door_pin, 
+                    button_pin)
                 logging.info(f'opening door.. because current time is {current_time}')
                 door_open = True
             except:
@@ -67,8 +69,9 @@ def main(open_time, close_time):
         elif current_time >=close_time and door_open == True:
             # then close door..
             try:
-                door_funcs.setup(open_door_pin, close_door_pin)
-                door_funcs.activate_door('open', 25, open_door_pin, close_door_pin)
+                door_funcs.setup(open_door_pin, close_door_pin, button_pin)
+                door_funcs.activate_door('open', 25, open_door_pin, close_door_pin,
+                    button_pin)
                 logging.info(f'closing door..because current time is {current_time}')
                 door_open = False
             except:
