@@ -8,6 +8,8 @@ open_door_pin = 17
 close_door_pin = 18
 
 # with new relay, it has default pins.. not sure how to change..
+# http://www.ingcool.com/wiki/RPi_Relay_Board?Amazon
+# ch 3 is pin 21 in case I need it later..
 open_door_pin = 26
 close_door_pin = 20 
 
