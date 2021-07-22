@@ -99,6 +99,6 @@ if __name__ == '__main__':
     logging.info('-------------------------------------------------------------')
     # setup open and close times
     open_time = datetime.datetime.now().replace(hour=6, minute=30, second=0, microsecond=0).time()
-    close_time = datetime.datetime.now().replace(hour=21, minute=0, second=0, microsecond=0).time()
+    close_time = datetime.datetime.now().replace(hour=08, minute=45, second=0, microsecond=0).time()
     # just run this indefinately..
     main(open_time, close_time)
