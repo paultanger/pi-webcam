@@ -4,3 +4,5 @@ RPi.GPIO
 ipython
 flask_basicauth
 twilio
+picamera
+matplotlib
