@@ -1,0 +1,7 @@
+Flask==1.1.2
+ipython==7.19.0
+numpy==1.19.5
+pandas==1.2.1
+picamera==1.13
+RPi.GPIO==0.7.0
+tensorflow @ https://github.com/bitsy-ai/tensorflow-arm-bin/releases/download/v2.4.0/tensorflow-2.4.0-cp37-none-linux_armv7l.whl

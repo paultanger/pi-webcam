@@ -38,9 +38,7 @@ account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
 twilio_phone = os.environ['TWILIO_PHONE_NUM']
 my_phone = os.environ['MY_PHONE_NUM']
-mer_phone = os.environ['MER_PHONE_NUM']
-lev_phone = os.environ['LEV_PHONE_NUM']
-dor_phone = os.environ['DOR_PHONE_NUM']
+# mer_phone = os.environ['MER_PHONE_NUM']
 
 client = Client(account_sid, auth_token)
 
@@ -183,20 +181,6 @@ def gen_predict():
                         body = "a possible egg!",
                         from_= twilio_phone,
                         to = my_phone
-                    )
-                    # text Levitie
-                    message = client.messages \
-                    .create(
-                        body = "a possible egg!",
-                        from_= twilio_phone,
-                        to = lev_phone
-                    )
-                    # text Dorothy
-                    message = client.messages \
-                    .create(
-                        body = "a possible egg!",
-                        from_= twilio_phone,
-                        to = dor_phone
                     )
                     # restart time to wait 30 mins before doing again
                     #global text_time

@@ -17,6 +17,9 @@
 		},
 		{
 			"path": "../davinci-kit-for-raspberry-pi"
+		},
+		{
+			"path": "../../../../etc"
 		}
 	],
 	"settings": {}

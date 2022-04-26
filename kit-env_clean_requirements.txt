@@ -1,0 +1,6 @@
+Flask
+numpy
+RPi.GPIO
+ipython
+flask_basicauth
+twilio
