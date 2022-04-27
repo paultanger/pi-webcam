@@ -6,3 +6,5 @@ flask_basicauth
 twilio
 picamera
 matplotlib
+cvlib
+gdown
