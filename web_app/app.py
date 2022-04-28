@@ -52,9 +52,11 @@ if len(sys.argv) > 2:
 else:
     start_cam = True
     # vc = cv2.VideoCapture(0) # zero is the default camera on pi
+    # check available cameras, framerate combinations:
+    # libcamera-raw --list-cameras 640x480 1296x972 1920x1080 2592x1944
     # try with new bullseye libcamera stuff instead:
     gst_str = ('libcamerasrc ! ' + 'video/x-raw,' +
-                'width=640, height=480,' +
+                'width=1920, height=1080,' +
                 'framerate=30/1 ! ' +
                 'videoconvert ! appsink')
     vc = cv2.VideoCapture(gst_str, cv2.CAP_GSTREAMER)
@@ -99,9 +101,12 @@ def gen():
     while True:
         rval, frame = vc.read() 
         #frame = camera.get_frame()
-        #breakpoint()
+        
+        # if empty, exit
+        if not rval:
+            break
         # resizing the frame size according to our need
-        #frame = cv2.resize(frame, (1920, 1080)) # width height default 480 x 640
+        frame = cv2.resize(frame, (640, 480)) # width height default 640 x 480
 
         # flip frame (depending on how we setup the camera)
         frame = cv2.flip(frame, 0)
@@ -147,6 +152,13 @@ def gen_predict():
     global text_time
     while True:
         rval, frame = vc.read() 
+
+        # if empty, exit
+        if not rval:
+            break
+
+        # resizing the frame size according to our need
+        frame = cv2.resize(frame, (640, 480)) # width height default 640 x 480
 
         # flip frame (depending on how we setup the camera)
         frame = cv2.flip(frame, 0)
@@ -238,7 +250,11 @@ def view_predict():
 
 @app.route('/stop_feed', methods=['GET', 'POST'])
 def stop_feed():
+    # TODO: get this working with new gstreamer..
+    cv2.waitKey(500)
     vc.release()
+    cv2.destroyAllWindows()
+    time.sleep(1)
     # del vc
     return render_template("setup_recordings.html")
 
@@ -246,7 +262,12 @@ def stop_feed():
 @app.route('/start_feed', methods=['GET', 'POST'])
 def start_feed():
     global vc
-    vc = cv2.VideoCapture(0)
+    # vc = cv2.VideoCapture(0)
+    gst_str = ('libcamerasrc ! ' + 'video/x-raw,' +
+            'width=1920, height=1080,' +
+            'framerate=30/1 ! ' +
+            'videoconvert ! appsink')
+    vc = cv2.VideoCapture(gst_str, cv2.CAP_GSTREAMER)
     time.sleep(2)
     return render_template("view_cam.html")
 
