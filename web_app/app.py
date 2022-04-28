@@ -51,7 +51,13 @@ if len(sys.argv) > 2:
     #vc = None
 else:
     start_cam = True
-    vc = cv2.VideoCapture(0) # zero is the default camera on pi
+    # vc = cv2.VideoCapture(0) # zero is the default camera on pi
+    # try with new bullseye libcamera stuff instead:
+    gst_str = ('libcamerasrc ! ' + 'video/x-raw,' +
+                'width=640, height=480,' +
+                'framerate=30/1 ! ' +
+                'videoconvert ! appsink')
+    vc = cv2.VideoCapture(gst_str, cv2.CAP_GSTREAMER)
 
 # initialize text time as 30 minutes earlier than app start
 mins_30 = timedelta(minutes=30)
