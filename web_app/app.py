@@ -34,10 +34,10 @@ print(f'app start time: {datetime.now()}')
 
 # setup twilio stuff
 # these are stored in /etc/rc.local
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
-twilio_phone = os.environ['TWILIO_PHONE_NUM']
-my_phone = os.environ['MY_PHONE_NUM']
+account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
+auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
+twilio_phone = os.environ.get('TWILIO_PHONE_NUM')
+my_phone = os.environ.get('MY_PHONE_NUM')
 # mer_phone = os.environ['MER_PHONE_NUM']
 
 client = Client(account_sid, auth_token)

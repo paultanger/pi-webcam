@@ -1,9 +1,9 @@
 from flask import Flask, request, render_template, Response, send_file
 from flask_basicauth import BasicAuth
 import sys, os
-# import cv2
-# import cvlib as cv
-# from cvlib.object_detection import draw_bbox
+import cv2
+import cvlib as cv
+from cvlib.object_detection import draw_bbox
 import picamera
 import time
 from datetime import datetime, timedelta
